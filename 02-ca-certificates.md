@@ -20,7 +20,7 @@ Now that you have the [prerequisites](./01-prerequisites.md) met, follow the ste
 
    ```bash
    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -out appgw.crt -keyout appgw.key -subj "/CN=bicycle.${DOMAIN_NAME_AKS_BASELINE}/O=Contoso Bicycle" -addext "subjectAltName = DNS:bicycle.${DOMAIN_NAME_AKS_BASELINE}" -addext "keyUsage = digitalSignature" -addext "extendedKeyUsage = serverAuth"
-   openssl pkcs12 -export -out appgw.pfx -in appgw.crt -inkey appgw.key -passout pass:
+   openssl pkcs12 -export -out highrez_wildcard_pfx.pfx -in appgw.crt -inkey appgw.key -passout pass:
    ```
 
 1. Base64 encode the client-facing certificate
@@ -28,7 +28,7 @@ Now that you have the [prerequisites](./01-prerequisites.md) met, follow the ste
    :bulb: No matter if you used a certificate from your organization or you generated one from above, you'll need the certificate (as `.pfx`) to be Base64 encoded for proper storage in Key Vault later.
 
    ```bash
-   export APP_GATEWAY_LISTENER_CERTIFICATE_AKS_BASELINE=$(cat appgw.pfx | base64 | tr -d '\n')
+   export APP_GATEWAY_LISTENER_CERTIFICATE_AKS_BASELINE=$(cat highrez_wildcard_pfx.pfx | base64 | tr -d '\n')
    ```
 
 1. Generate the wildcard certificate for the AKS Ingress Controller
